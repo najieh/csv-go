@@ -28,23 +28,18 @@ func stringArrayToFloat (records [][] string) ([][]float64, error) {
 	var err error = nil
 	list := make([][]float64, len(records))
 	for i := range list {
-    	list[i] = make([]float64, len(records[i]))
+    	list[i] = make([]float64, 2)
 	}
-	i := 0
-	for _, record := range records {
+	for i, record := range records {
 		for _, cell := range record {
 			parts := strings.Split(cell, "\t")
 			for index, element := range parts {
-				// index is the index where we are
-    			// element is the element from someSlice for where we are
-				fmt.Println(strconv.ParseFloat(element, 64))
 				list[i][index], err = strconv.ParseFloat(element, 64)
 				if err != nil {
 					fmt.Println("Unable to parse");
 				}
 			}
 		}
-		i++
 	}
 	return list, nil
 }
@@ -54,6 +49,19 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
-    fmt.Println(records)
-	
+    //fmt.Println(records)
+	newRecords, err := stringArrayToFloat(records)
+	fmt.Println(newRecords)
+
+	printNewRecords(newRecords)
+}
+
+func printNewRecords (newRecords [][] float64) {
+	for i, row := range newRecords {
+		fmt.Print("row is : ", i, " , ")
+		for j, col := range row {
+			fmt.Print("element ", j, " is ", col, " , ")
+		}
+		fmt.Println()
+	}
 }
