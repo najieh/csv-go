@@ -25,38 +25,35 @@ func readCsvFile(filePath string) ([][]string, error) {
 }
 
 func stringArrayToFloat (records [][] string) ([][]float64, error) {
+	var err error = nil
 	list := make([][]float64, len(records))
 	for i := range list {
     	list[i] = make([]float64, len(records[i]))
 	}
 	i := 0
-	j := 0
 	for _, record := range records {
 		for _, cell := range record {
-			parts := strings.Split(cell)
-			
+			parts := strings.Split(cell, "\t")
 			for index, element := range parts {
 				// index is the index where we are
     			// element is the element from someSlice for where we are
-				
+				fmt.Println(strconv.ParseFloat(element, 64))
+				list[i][index], err = strconv.ParseFloat(element, 64)
+				if err != nil {
+					fmt.Println("Unable to parse");
+				}
 			}
-
-			list[i][j], err = strconv.ParseFloat(cell, 64)
-			if err != nil {
-				//fmt.Println("Unable to parse")
-				//os.Exit(1)
-			}
-			//fmt.Print(cell, " ")
-			j++
 		}
 		i++
-		j = 0
-		//fmt.Println()
 	}
-	return list
+	return list, nil
 }
 
 func main() {
-    records := readCsvFile("./test.csv")
+    records, err := readCsvFile("./test.csv")
+	if err != nil {
+		os.Exit(1)
+	}
     fmt.Println(records)
+	
 }
