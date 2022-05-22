@@ -76,8 +76,20 @@ func averageWordsPerMinute (arr [][] float64) int {
 	return int(sum/length) // change to get words and time,  
 }
 
+func writeToCsv (column1 string, column2 string) (bool, error) {
+	f, err := os.OpenFile("test.csv", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		return false, err
+	}
+	arr := [] string {column1, column2}
+	w := csv.NewWriter(f)
+	w.Write(arr)
+	w.Flush()
+	return true, nil
+}
+
 func main() {
-    records, err := readCsvFile("./test.csv")
+    /*records, err := readCsvFile("./test.csv")
 	if err != nil {
 		os.Exit(1)
 	}
@@ -90,4 +102,5 @@ func main() {
 
 	fmt.Println(newRecords)
 	printNewRecords(newRecords)
+	writeToCsv("1","2")*/
 }
